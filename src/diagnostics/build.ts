@@ -14,6 +14,7 @@ import * as diab from './diab';
 import * as gnu_ld from './gnu-ld';
 import * as mvsc from './msvc';
 import * as iar from './iar';
+import * as tasking from './tasking';
 import { FileDiagnostic, RawDiagnosticParser } from './util';
 import { ConfigurationReader } from '@cmt/config';
 
@@ -26,6 +27,7 @@ export class Compilers {
     gnuLD = new gnu_ld.Parser();
     msvc = new mvsc.Parser();
     iar = new iar.Parser();
+    tasking = new tasking.Parser();
 }
 
 export class CompileOutputConsumer implements OutputConsumer {
@@ -73,7 +75,8 @@ export class CompileOutputConsumer implements OutputConsumer {
             GHS: this.compilers.ghs.diagnostics,
             DIAB: this.compilers.diab.diagnostics,
             link: this.compilers.gnuLD.diagnostics,
-            IAR: this.compilers.iar.diagnostics
+            IAR: this.compilers.iar.diagnostics,
+            TASKING: this.compilers.tasking.diagnostics
         };
         const arrs = util.objectPairs(by_source)
             .filter(([source, _]) => this.config.enableOutputParsers?.includes(source.toLowerCase()) ?? false)
